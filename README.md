@@ -28,7 +28,7 @@ Intelligent Form Validation
 
 Real-time feedback for all fields
 
-Specific error messages (e.g., invalid email format)
+Specific error messages 
 
 Required field indicators via validation
 
