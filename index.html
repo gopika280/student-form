@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'emerald': {
+                            '50': '#ecfdf5',
+                            '100': '#d1fae5',
+                            '200': '#a7f3d0',
+                            '300': '#6ee7b7',
+                            '400': '#34d399',
+                            '500': '#10b981',  // Base emerald
+                            '600': '#059669',  // Slightly darker
+                            '700': '#047857',  // Darker
+                            '800': '#065f46',  // Even darker
+                            '900': '#064e3b',  // Darkest
+                        },
+                        'border-dark': '#374151', // Custom darker border color
+                        'professional': '#2D3748',
+                        'professional-light': '#4A5568'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-r from-emerald-600 to-emerald-800 min-h-screen p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-white mb-8 text-center">Student Registration Form</h1>
+        
+        <!-- Form Section -->
+        <div class="bg-white rounded-lg shadow-xl p-6 mb-8 border border-gray-300">
+            <form id="studentForm" class="space-y-4">
+                <div>
+                    <label for="name" class="block text-professional font-medium">Name:</label>
+                    <input type="text" id="name" placeholder="Enter your name" 
+                           class="w-full px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                    <p id="nameError" class="text-red-500 text-sm mt-1 hidden">Please enter a valid name</p>
+                </div>
+                
+                <div>
+                    <label for="age" class="block text-professional font-medium">Age:</label>
+                    <input type="number" id="age" placeholder="Enter your age" 
+                           class="w-full px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                    <p id="ageError" class="text-red-500 text-sm mt-1 hidden">Please enter a valid age (1-100)</p>
+                </div>
+                
+                <div>
+                    <label class="block text-professional font-medium">Gender:</label>
+                    <div class="flex space-x-4 mt-2">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="gender" value="Male" checked 
+                                   class="text-emerald-600 focus:ring-emerald-500">
+                            <span class="ml-2 text-gray-700">Male</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="gender" value="Female" 
+                                   class="text-emerald-600 focus:ring-emerald-500">
+                            <span class="ml-2 text-gray-700">Female</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="course" class="block text-professional font-medium">Course:</label>
+                    <select id="course" class="w-full px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                        <option value="">Select a course</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Business">Business</option>
+                        <option value="Arts">Arts</option>
+                        <option value="Medicine">Medicine</option>
+                    </select>
+                    <p id="courseError" class="text-red-500 text-sm mt-1 hidden">Please select a course</p>
+                </div>
+                
+                <div>
+                    <label for="email" class="block text-professional font-medium">E-mail:</label>
+                    <input type="email" id="email" placeholder="Enter your e-mail" 
+                           class="w-full px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                    <p id="emailError" class="text-red-500 text-sm mt-1 hidden">Please enter a valid email</p>
+                </div>
+                
+                <button type="submit" class="w-full bg-emerald-600 text-white py-2 px-4 rounded-md hover:bg-emerald-700 transition duration-200 font-medium shadow-md">
+                    Save
+                </button>
+            </form>
+        </div>
+        
+        <!-- Data Table Section -->
+        <div class="bg-white rounded-lg shadow-xl p-6 border border-gray-300">
+            <h2 class="text-xl font-bold text-professional mb-4">Registered Students</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="py-3 px-4 border-b-2 border-gray-400 text-left text-professional font-medium">Name</th>
+                            <th class="py-3 px-4 border-b-2 border-gray-400 text-left text-professional font-medium">Age</th>
+                            <th class="py-3 px-4 border-b-2 border-gray-400 text-left text-professional font-medium">Course</th>
+                            <th class="py-3 px-4 border-b-2 border-gray-400 text-left text-professional font-medium">Gender</th>
+                            <th class="py-3 px-4 border-b-2 border-gray-400 text-left text-professional font-medium">E-mail</th>
+                            <th class="py-3 px-4 border-b-2 border-gray-400 text-left text-professional font-medium">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody">
+                        <!-- Student data will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('studentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value.trim();
+            const age = document.getElementById('age').value;
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const course = document.getElementById('course').value;
+            const email = document.getElementById('email').value.trim();
+            
+            // Validation flags
+            let isValid = true;
+            
+            // Validate name
+            if (name === '' || name.length < 2) {
+                document.getElementById('nameError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('nameError').classList.add('hidden');
+            }
+            
+            // Validate age
+            if (age === '' || isNaN(age) || age < 1 || age > 100) {
+                document.getElementById('ageError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('ageError').classList.add('hidden');
+            }
+            
+            // Validate course
+            if (course === '') {
+                document.getElementById('courseError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('courseError').classList.add('hidden');
+            }
+            
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').classList.remove('hidden');
+                isValid = false;
+            } else {
+                document.getElementById('emailError').classList.add('hidden');
+            }
+            
+            // If all valid, add to table
+            if (isValid) {
+                addStudentToTable(name, age, course, gender, email);
+                this.reset();
+            }
+        });
+        
+        function addStudentToTable(name, age, course, gender, email) {
+            const tableBody = document.getElementById('studentTableBody');
+            const newRow = document.createElement('tr');
+            newRow.className = 'hover:bg-gray-50';
+            
+            newRow.innerHTML = `
+                <td class="py-3 px-4 border-b border-gray-300 text-gray-700">${name}</td>
+                <td class="py-3 px-4 border-b border-gray-300 text-gray-700">${age}</td>
+                <td class="py-3 px-4 border-b border-gray-300 text-gray-700">${course}</td>
+                <td class="py-3 px-4 border-b border-gray-300 text-gray-700">${gender}</td>
+                <td class="py-3 px-4 border-b border-gray-300 text-gray-700">${email}</td>
+                <td class="py-3 px-4 border-b border-gray-300">
+                    <button onclick="deleteStudent(this)" class="text-red-500 hover:text-red-700 font-medium">
+                        Delete
+                    </button>
+                </td>
+            `;
+            
+            tableBody.appendChild(newRow);
+        }
+        
+        function deleteStudent(button) {
+            const row = button.closest('tr');
+            row.remove();
+        }
+    </script>
+</body>
+</html>
